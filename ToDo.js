@@ -24,8 +24,8 @@ export default class ToDo extends React.Component {
                     </TouchableOpacity>
                     {isEditing ? (
                         <TextInput style={[
-                                        styles.input,
                                         styles.text,
+                                        styles.input,
                                         isCompleted ? styles.completedText : styles.unCompletedText
                                         ]} value={toDoValue} multiline={true}
                                         onChangeText={this._controlInput}
