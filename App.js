@@ -9,7 +9,8 @@ const { height, width } = Dimensions.get("window")
 export default class App extends React.Component {
   state = {
     newToDo: "",
-    loadedToDos: false
+    loadedToDos: false,
+    toDos: {}
   }
 
   componentDidMount = () => {
@@ -17,7 +18,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { newToDo, loadedToDos } = this.state
+    const { newToDo, loadedToDos, toDos } = this.state
+    console.log(toDos)
+
     if (!loadedToDos) {
       <AppLoading></AppLoading>
     }
@@ -28,7 +31,7 @@ export default class App extends React.Component {
         <View style={styles.card}>
           <TextInput style={styles.input} placeholder={"New To Do"} value={newToDo} onChangeText={this._controlNewToDo} placeholderTextColor={"#999"} returnKeyType={"done"} autoCorrect={false} onSubmitEditing={this._addToDo}/>
           <ScrollView contentContainerStyle={styles.toDos}>
-            <ToDo text={"Hello I'm a To Do"} />
+            {Object.values(toDos).map(toDo => (<ToDo key={toDo.id} {...toDo} deleteToDo={ this._deleteToDo } />))}
           </ScrollView>
         </View>
       </View>
@@ -47,11 +50,7 @@ export default class App extends React.Component {
   _addToDo = () => {
     const { newToDo } = this.state;
     if( newToDo !== "" ) {
-      // this.setState({
-      //   newToDo: ""
-      // });
-
-      this.setState( preState => {
+      this.setState( prevState => {
         const ID = uuidv1();
         const newToDoObject = {
           [ID] : {
@@ -63,17 +62,28 @@ export default class App extends React.Component {
         };
 
         const newState = {
-          ...preState,
+          ...prevState,
           newToDo: "",
           toDos: {
-            ...preState.newToDo,
+            ...prevState.toDos,
             ...newToDoObject
           }
         };
-
         return { ...newState };
       })
     }
+  }
+  _deleteToDo = (id) => {
+    this.setState(prevState => {
+      const toDos = prevState.toDos;
+      delete toDos[id];
+      const newState = {
+        ...prevState,
+        ...toDos
+      };
+
+      return { ...newState };
+    })
   }
 }
 
