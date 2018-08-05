@@ -13,13 +13,13 @@ export default class App extends React.Component {
     toDos: {}
   }
 
+
   componentDidMount = () => {
     this._loadToDos();
   }
 
   render() {
     const { newToDo, loadedToDos, toDos } = this.state
-    console.log(toDos)
 
     if (!loadedToDos) {
       <AppLoading></AppLoading>
