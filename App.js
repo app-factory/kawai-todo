@@ -22,14 +22,16 @@ export default class App extends React.Component {
     const { newToDo, loadedToDos, toDos } = this.state
 
     if (!loadedToDos) {
-      <AppLoading></AppLoading>
+      return <AppLoading />;
     }
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.title}>Kawai To Do</Text>
         <View style={styles.card}>
-          <TextInput style={styles.input} placeholder={"New To Do"} value={newToDo} onChangeText={this._controlNewToDo} placeholderTextColor={"#999"} returnKeyType={"done"} autoCorrect={false} onSubmitEditing={this._addToDo}/>
+          <TextInput style={styles.input} placeholder={"New To Do"} value={newToDo} onChangeText={this._controlNewToDo} placeholderTextColor={"#999"} returnKeyType={"done"} autoCorrect={false} onSubmitEditing={this._addToDo}
+          underlineColorAndroid={"transparent"}
+          />
           <ScrollView contentContainerStyle={styles.toDos}>
             {Object.values(toDos).reverse().map(toDo => (<ToDo
             key={toDo.id}
@@ -56,7 +58,7 @@ export default class App extends React.Component {
       console.log(toDos);
       setTimeout(() => {
         this.setState({ loadedToDos: true, toDos: parsedToDos || {} })
-      }, 3000);
+      }, 2000);
     } catch(err) {
       console.log(err)
     }
