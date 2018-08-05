@@ -31,7 +31,13 @@ export default class App extends React.Component {
         <View style={styles.card}>
           <TextInput style={styles.input} placeholder={"New To Do"} value={newToDo} onChangeText={this._controlNewToDo} placeholderTextColor={"#999"} returnKeyType={"done"} autoCorrect={false} onSubmitEditing={this._addToDo}/>
           <ScrollView contentContainerStyle={styles.toDos}>
-            {Object.values(toDos).map(toDo => (<ToDo key={toDo.id} {...toDo} deleteToDo={ this._deleteToDo } />))}
+            {Object.values(toDos).map(toDo => (<ToDo
+            key={toDo.id}
+            deleteToDo={ this._deleteToDo }
+            uncompleteToDo={ this._uncompleteToDo }
+            completeToDo={ this._completeToDo }
+            {...toDo} 
+            />))}
           </ScrollView>
         </View>
       </View>
@@ -41,12 +47,12 @@ export default class App extends React.Component {
     this.setState({
       newToDo: text
     });
-  }
+  };
   _loadToDos = () => {
     this.setState({
       loadedToDos: true
     });
-  }
+  };
   _addToDo = () => {
     const { newToDo } = this.state;
     if( newToDo !== "" ) {
@@ -72,7 +78,7 @@ export default class App extends React.Component {
         return { ...newState };
       })
     }
-  }
+  };
   _deleteToDo = (id) => {
     this.setState(prevState => {
       const toDos = prevState.toDos;
@@ -81,10 +87,42 @@ export default class App extends React.Component {
         ...prevState,
         ...toDos
       };
-
+      console.log(newState)
       return { ...newState };
     })
-  }
+  };
+  _uncompleteToDo = (id) => {
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        toDos: {
+          ...prevState.toDos,
+          [id]: {
+            ...prevState.toDos[id],
+            isCompleted: false
+          }
+        }
+      };
+      console.log(newState)
+      return { ...newState };
+    })
+  };
+
+  _completeToDo = (id) => {
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        toDos: {
+          ...prevState.toDos,
+          [id]: {
+            ...prevState.toDos[id],
+            isCompleted: true
+          }
+        }
+      };
+      return { ...newState };
+    })
+  };
 }
 
 const styles = StyleSheet.create({
