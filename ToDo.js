@@ -97,7 +97,7 @@ export default class ToDo extends React.Component {
     _controlInput = (text) => {
         this.setState({
             toDoValue: text
-        })
+        });
     };
 }
 
